@@ -1,10 +1,14 @@
 package com.cursojava.curso.controllers;
 import com.cursojava.curso.dao.IUserDao;
 import com.cursojava.curso.models.User;
+import com.cursojava.curso.utils.JWTUtil;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -12,6 +16,9 @@ public class UserController {
 
     @Autowired
     private IUserDao iUserDao;
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @RequestMapping(value = "api/users/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable Long id){
@@ -26,8 +33,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "api/users", method = RequestMethod.GET)
-    public List<User> GetUsers() {
+    public List<User> GetUsers(@RequestHeader(value = "Authorization") String token ) {
+
+          if (!validateToken(token)){
+              return null;
+          }
         return iUserDao.getUsers();
+    }
+
+    private boolean validateToken(String token){
+
+        String userID = jwtUtil.getKey(token);
+        return userID != null;
+
     }
 
     @RequestMapping(value = "api/users", method = RequestMethod.POST)
@@ -40,8 +58,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "api/users/{id}", method = RequestMethod.DELETE)
-    public void Delete( @PathVariable Long id){
+    public void Delete( @RequestHeader(value = "Authorization") String token,
+                        @PathVariable Long id){
+        if (!validateToken(token)){
+            return;
+        }
+
         iUserDao.Delete(id);
     }
-
 }
