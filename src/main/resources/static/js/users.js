@@ -14,14 +14,13 @@ async function usersLoad(){
     },
   });
   const users = await request.json();
-
-
 let htmlList = '';
 for (let user of users )
 {
+let phone = user.phone == null ? '-' : user.phone;
 let btnDelete ='<a href="#" onclick="deleteUser('+user.id+ ')" class="btn btn-danger btn-circle btn-sm"><i class="fas fa-trash"></i></a>';
-let userHtml = '<tr> <td>10456655</td> <td>'+user.name+ ' '+user.lastname+'</td> <td>'
-+user.email+'</td> <td>'+user.phone
+let userHtml = '<tr> <td>'+user.id+'</td> <td>'+user.name+ ' '+user.lastname+'</td> <td>'
++user.email+'</td> <td>'+phone
 +'</td><td>'+ btnDelete + '</td></tr>';
 htmlList += userHtml;
 }

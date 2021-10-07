@@ -8,4 +8,8 @@ public interface IUserDao {
 
     List<User> getUsers();
     void Delete(Long id);
+
+    void RegisterUser(User user);
+
+    boolean verifyCredentials(User user);
 }

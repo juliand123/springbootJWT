@@ -21,6 +21,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'mysql:mysql-connector-java:5.1.6'
 	implementation 'org.postgresql:postgresql'
+	implementation 'de.mkammerer:argon2-jvm:2.5'
 
 
 	compileOnly 'org.projectlombok:lombok:1.18.20'

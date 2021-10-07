@@ -4,17 +4,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name ="users")
 @ToString @EqualsAndHashCode
 public class User {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Getter @Setter @Column(name = "id")
     private Long id;
     @Getter @Setter @Column(name = "name")
@@ -27,6 +26,7 @@ public class User {
     private String phone;
     @Getter @Setter @Column(name = "password")
     private String password;
-    @Getter @Setter @Column(name = "created_on")
-    private String created_on;
+
+//    @Getter @Setter @Column(name = "created_on")
+//    private String created_on;
 }

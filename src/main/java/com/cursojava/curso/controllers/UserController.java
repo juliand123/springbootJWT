@@ -1,14 +1,10 @@
 package com.cursojava.curso.controllers;
-
 import com.cursojava.curso.dao.IUserDao;
 import com.cursojava.curso.models.User;
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
@@ -29,9 +25,18 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "api/users")
+    @RequestMapping(value = "api/users", method = RequestMethod.GET)
     public List<User> GetUsers() {
         return iUserDao.getUsers();
+    }
+
+    @RequestMapping(value = "api/users", method = RequestMethod.POST)
+    public void RegisterUser(@RequestBody User user) {
+        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+        String hash = argon2.hash(3, 1024, 3, user.getPassword());
+        user.setPassword(hash);
+
+        iUserDao.RegisterUser(user);
     }
 
     @RequestMapping(value = "api/users/{id}", method = RequestMethod.DELETE)
