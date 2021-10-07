@@ -14,7 +14,9 @@ data.password = document.getElementById('txtPassword').value
     body: JSON.stringify(data)
   });
 const response = await request.text();
-if (response =='OK'){
+if (response !='FAIL'){
+localStorage.token = response;
+localStorage.email = data.email;
 window.location.href = 'users.html'
 }else
 {

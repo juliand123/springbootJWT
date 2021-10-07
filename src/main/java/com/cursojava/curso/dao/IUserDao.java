@@ -11,5 +11,5 @@ public interface IUserDao {
 
     void RegisterUser(User user);
 
-    boolean verifyCredentials(User user);
+    User GetUserWithCredentials(User user);
 }
